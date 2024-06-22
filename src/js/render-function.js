@@ -5,7 +5,7 @@ import "izitoast/dist/css/iziToast.min.css";
 const list = document.querySelector('gallery');
 
 function imagesTemplate(data) {
-  // const { webformatURL, largeImageURL, tags, likes, views, comments, downloads } = data.hits;
+  const { webformatURL, largeImageURL, tags, likes, views, comments, downloads } = data.hits;
 
     if (data.hits === '[]') {
         iziToast.error({
@@ -20,25 +20,26 @@ function imagesTemplate(data) {
     else {
       const markup = data.hits
         .map(image => {
-      return `<a class="gallery-item" href="${image.largeImageURL}">
+          const { webformatURL, largeImageURL, tags, likes, views, comments, downloads } = image;
+          return `<a class="gallery-item" href="${largeImageURL}">
     <img
       width=360;
       height=200;
       class="gallery-image"
-      src="${image.webformatURL}"
-      alt="${image.tags} " />
+      src="${webformatURL}"
+      alt="${tags} " />
           <div class="image-info">
-               <p>LIKES: ${image.likes}</p>
-                    <p>VIEWS: ${image.views}</p>
-                    <p>COMMENTS: ${image.comments}</p>
-                    <p>DOWNLOADS: ${image.downloads}</p>
+               <p>LIKES: ${likes}</p>
+                    <p>VIEWS: ${views}</p>
+                    <p>COMMENTS: ${comments}</p>
+                    <p>DOWNLOADS: ${downloads}</p>
                 </div>
             </a>
         `;
-    })
+        })
         .join('');
-      list.innerHTML = markup;
+      return markup
   }
 }
- 
+
 export default imagesTemplate;
