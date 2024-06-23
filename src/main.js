@@ -7,10 +7,12 @@ import "simplelightbox/dist/simple-lightbox.min.css";
 
 const form = document.querySelector('form');
 const gallery = document.querySelector('.gallery');
+const loader = document.querySelector('.loader')
 
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     gallery.innerHTML = '';
+    showLoader();
     const value = e.target.elements.search.value.trim();
     if (value === ''){
         iziToast.warning({
@@ -26,11 +28,19 @@ form.addEventListener('submit', (e) => {
     fetchImages(value)
         .then(data => {
             const markup = imagesTemplate(data);
-            console.log(markup)
             gallery.insertAdjacentHTML('beforeend', markup);
+            const lightbox = new SimpleLightbox('.gallery a', { captionsData: 'alt', captionDelay: 250 });
+            lightbox.refresh();
         })
-        .catch(error => { console.log(error) });
+        .catch(error => { console.log(error) })
+        .finally(() => hideLoader())
     form.reset();
 });
 
-const lightbox = new SimpleLightbox('.gallery li', { captionsData: 'alt', captionDelay: 250 });
+function showLoader() {
+    loader.classList.remove('visually-hidden');
+}
+
+function hideLoader() {
+    loader.classList.add('visually-hidden');
+}
