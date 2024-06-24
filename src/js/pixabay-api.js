@@ -6,7 +6,7 @@ const fetchImages = value => {
     q: value,
     image_type: 'photo',
     orientation: 'horizontal',
-    safesearch: true
+    safesearch: true,
   })
   const url = `${BASE_URL}${END_POINT}?${params}`;
   return fetch(url).then(res => res.json())

@@ -22,7 +22,8 @@ form.addEventListener('submit', (e) => {
             backgroundColor: 'orange',
             theme: 'dark',
             messageColor: 'white',
-        })
+        });
+        hideLoader();
         return
     }
     fetchImages(value)
@@ -32,7 +33,17 @@ form.addEventListener('submit', (e) => {
             const lightbox = new SimpleLightbox('.gallery a', { captionsData: 'alt', captionDelay: 250 });
             lightbox.refresh();
         })
-        .catch(error => { console.log(error) })
+        .catch(error => {
+            console.log(error);
+            iziToast.error({
+      title: 'Error',
+      message: 'Sorry, there are no images matching your search query. Please try again!',
+      position: 'topCenter',
+      backgroundColor: 'red',
+      theme: 'dark',
+      messageColor: 'white',
+     })
+         })
         .finally(() => hideLoader())
     form.reset();
 });
